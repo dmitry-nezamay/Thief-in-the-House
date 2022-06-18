@@ -2,44 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
+
 public class House : MonoBehaviour
 {
     private static WaitForSeconds _waitAlarmSoundGain = new WaitForSeconds(0.04f);
 
+    [SerializeField] private AlarmSystem _alarmSystem;
+
     private Animator _animator;
-    private AudioSource _audioSource;
-    private Coroutine _alarmSoundCoroutine;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        _audioSource = GetComponent<AudioSource>();
     }
 
     public void OnThiefInsideHouse()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        _animator.SetBool("IsThiefInsideHouse", true);
-        _audioSource.Play();
-        _alarmSoundCoroutine = StartCoroutine(AlarmSoundGain());
+        _animator.SetBool(HouseAnimatorController.Params.IsThiefInsideHouse, true);
+        _alarmSystem.StartAlarm();
     }
 
     public void OnThiefOutsideHouse()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        _animator.SetBool("IsThiefInsideHouse", false);
-        _audioSource.Stop();
-
-        if (_alarmSoundCoroutine != null)
-            StopCoroutine(_alarmSoundCoroutine);
-    }
-
-    private IEnumerator AlarmSoundGain()
-    {
-        for (int i = 0; i < 100; i++)
-        {
-            _audioSource.volume = (float)i / 100;
-            yield return _waitAlarmSoundGain;
-        }
+        _animator.SetBool(HouseAnimatorController.Params.IsThiefInsideHouse, false);
+        _alarmSystem.StopAlarm();
     }
 }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(SpriteRenderer))]
+
 public class Thief : MonoBehaviour
 {
     private static float _speedInsideHouse = 1f;
