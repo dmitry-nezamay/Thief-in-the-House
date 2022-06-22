@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 
-public class AlarmSystem : MonoBehaviour
+public class Alarm : MonoBehaviour
 {
     private static WaitForSeconds _waitAlarmSoundGain = new WaitForSeconds(0.04f);
 

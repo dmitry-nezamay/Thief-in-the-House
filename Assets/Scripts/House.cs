@@ -8,7 +8,7 @@ public class House : MonoBehaviour
 {
     private static WaitForSeconds _waitAlarmSoundGain = new WaitForSeconds(0.04f);
 
-    [SerializeField] private AlarmSystem _alarmSystem;
+    [SerializeField] private Alarm _alarmSystem;
 
     private Animator _animator;
 
@@ -19,14 +19,12 @@ public class House : MonoBehaviour
 
     public void OnThiefInsideHouse()
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         _animator.SetBool(HouseAnimatorController.Params.IsThiefInsideHouse, true);
         _alarmSystem.StartAlarm();
     }
 
     public void OnThiefOutsideHouse()
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         _animator.SetBool(HouseAnimatorController.Params.IsThiefInsideHouse, false);
         _alarmSystem.StopAlarm();
     }
