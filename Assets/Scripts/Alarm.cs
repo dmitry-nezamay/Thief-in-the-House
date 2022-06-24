@@ -6,37 +6,49 @@ using UnityEngine;
 
 public class Alarm : MonoBehaviour
 {
-    private static WaitForSeconds _waitAlarmSoundGain = new WaitForSeconds(0.04f);
+    private static WaitForSeconds _waitSoundGain = new WaitForSeconds(0.04f);
+    private static float _volumeRate = 0.03f;
 
     private AudioSource _audioSource;
-    private Coroutine _alarmSoundCoroutine;
+    private Coroutine _soundCoroutine;
+    private bool _isVolumeIncreasing;
 
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-        StopAlarm();
+        TurnOff();
     }
 
-    public void StartAlarm()
+    public void TurnOn()
     {
+        _audioSource.volume = 0;
+        _isVolumeIncreasing = true;
         _audioSource.Play();
-        _alarmSoundCoroutine = StartCoroutine(AlarmSoundGain());
+        _soundCoroutine = StartCoroutine(SoundGain());
     }
 
-    public void StopAlarm()
+    public void TurnOff()
     {
         _audioSource.Stop();
 
-        if (_alarmSoundCoroutine != null)
-            StopCoroutine(_alarmSoundCoroutine);
+        if (_soundCoroutine != null)
+            StopCoroutine(_soundCoroutine);
     }
 
-    private IEnumerator AlarmSoundGain()
+    private IEnumerator SoundGain()
     {
-        for (int i = 0; i < 100; i++)
+        bool isPlaying = true;
+
+        while (isPlaying)
         {
-            _audioSource.volume = (float)i / 100;
-            yield return _waitAlarmSoundGain;
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _isVolumeIncreasing ? 1 : 0, _volumeRate);
+
+            if (_audioSource.volume >= 1)
+                _isVolumeIncreasing = false;
+            else if (_audioSource.volume <= 0)
+                _isVolumeIncreasing = true;
+
+            yield return _waitSoundGain;
         }
     }
 }

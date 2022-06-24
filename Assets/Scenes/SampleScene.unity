@@ -499,7 +499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6401283c885fb874f90a22fbf9f65483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _alarmSystem: {fileID: 1163033532}
+  _alarm: {fileID: 1163033532}
 --- !u!95 &1081026470
 Animator:
   serializedVersion: 4
